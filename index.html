@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DRIP — No Right Answer In Fashion</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="css/style.css"/>
+
+</head>
+
+<body>
+
+<header>
+<div class="logo-wrap">
+<div class="logo">DRIP</div>
+<span class="logo-tag">No right answer in fashion</span>
+</div>
+
+<nav>
+
+<button type="button" class="nb on" onclick="showTab('closet',this)">
+Closet
+</button>
+
+<button type="button" class="nb" onclick="showTab('ai',this)">
+AI Style
+</button>
+
+<button type="button" class="nb" onclick="showTab('saved',this)">
+Saved
+</button>
+
+</nav>
+</header>
+
+<main>
+
+<!-- CLOSET -->
+
+<section id="tab-closet">
+
+<div class="ph">
+<div class="ph-left">
+<div class="ph-title">My Closet</div>
+<div class="ph-sub">
+<span id="count">0</span> pieces
+</div>
+</div>
+</div>
+
+<div class="filters">
+
+<button type="button" class="ftag on" onclick="filterC('all',this)">All</button>
+<button type="button" class="ftag" onclick="filterC('top',this)">상의</button>
+<button type="button" class="ftag" onclick="filterC('bottom',this)">하의</button>
+<button type="button" class="ftag" onclick="filterC('outer',this)">아우터</button>
+<button type="button" class="ftag" onclick="filterC('shoes',this)">신발</button>
+<button type="button" class="ftag" onclick="filterC('accessory',this)">악세사리</button>
+
+<button type="button" class="add-btn" onclick="openAdd()">+ Add</button>
+
+</div>
+
+<div class="ig-grid" id="closet-grid"></div>
+
+</section>
+
+<!-- AI STYLE -->
+
+<section id="tab-ai" style="display:none">
+
+<div class="ph">
+<div class="ph-left">
+<div class="ph-title">AI Style</div>
+<div class="ph-sub">
+아이템 선택 후 코디 추천
+</div>
+</div>
+</div>
+
+<div class="ai-layout">
+
+<div class="ai-panel">
+
+<div class="ai-panel-ttl">Items</div>
+
+<div class="slot-row">
+
+<div class="slot" onclick="openPick('top')">
+<div class="slot-ico">👕</div>
+<div class="slot-lbl">상의</div>
+</div>
+
+<div class="slot" onclick="openPick('bottom')">
+<div class="slot-ico">👖</div>
+<div class="slot-lbl">하의</div>
+</div>
+
+<div class="slot" onclick="openPick('outer')">
+<div class="slot-ico">🧥</div>
+<div class="slot-lbl">아우터</div>
+</div>
+
+<div class="slot" onclick="openPick('shoes')">
+<div class="slot-ico">👟</div>
+<div class="slot-lbl">신발</div>
+</div>
+
+</div>
+
+<div class="acc-slot" onclick="openPick('accessory')">
+
+<span style="font-size:18px;opacity:0.4">💍</span>
+
+<div>
+<div class="acc-label">악세사리</div>
+<div id="acc-nm" class="acc-value">선택 없음</div>
+</div>
+
+</div>
+
+<button class="rec-btn" onclick="getRec()">
+Get AI Recommendation
+</button>
+
+</div>
+
+<div class="result-panel">
+
+<div class="ai-panel-ttl">Analysis</div>
+
+<div id="result-wrap">
+
+<div class="result-ph">
+<div class="rph-icon">✦</div>
+<div class="rph-txt">
+아이템을 선택하고<br>
+추천을 받아보세요
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- SAVED -->
+
+<section id="tab-saved" style="display:none">
+
+<div class="ph">
+<div class="ph-left">
+
+<div class="ph-title">Saved</div>
+
+<div class="ph-sub">
+<span id="sv-count">0</span> outfits
+</div>
+
+</div>
+</div>
+
+<div class="sv-grid" id="saved-grid"></div>
+
+</section>
+
+</main>
+
+<!-- ADD MODAL -->
+
+<div id="modal-add" style="display:none">
+
+<div class="overlay" onclick="closeM('modal-add')">
+
+<div class="modal" onclick="event.stopPropagation()">
+
+<div class="mh">
+<div class="mt">Add item</div>
+<button type="button" class="xb" onclick="closeM('modal-add')">✕</button>
+</div>
+
+<div class="mb">
+
+<div class="fg">
+
+<label class="fl">Photo</label>
+
+<div class="upzone" onclick="document.getElementById('fi-img').click()">
+
+<input type="file" id="fi-img" accept="image/*" onchange="handleUp(event)" style="display:none">
+
+<div id="up-wrap">
+<div class="up-icon">📷</div>
+<div class="up-txt">Tap to upload photo (optional)</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="fg">
+<label class="fl">Item name *</label>
+<input class="fi" id="i-name" placeholder="예: 블랙 오버핏 후디"/>
+</div>
+
+<div class="fg">
+<label class="fl">Color</label>
+<input class="fi" id="i-color" placeholder="예: 블랙"/>
+</div>
+
+<div class="fg">
+<label class="fl">Brand</label>
+<input class="fi" id="i-brand" placeholder="예: Nike"/>
+</div>
+
+<button type="button" class="sbmt" onclick="addItem()">
+Add to Closet
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="toast" class="toast" style="display:none"></div>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>
